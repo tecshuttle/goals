@@ -1,6 +1,7 @@
 <template>
-  <h1>{{ msg }}</h1>
-  <button @click="count++">count is: {{ count }}</button>
+  <router-link to="/">Home</router-link> |
+  <router-link to="/about">About</router-link> |
+  <router-link to="/todo">Todo</router-link>
 </template>
 
 <script lang="ts">
