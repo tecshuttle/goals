@@ -25,7 +25,7 @@ export default defineComponent({
     getData() {
       axios
         //params:可传递多个参数,固定写法,不能改,否则参数传递失败
-        .get("/api/mysql")
+        .get("/api/projects")
         .then((res) => {
           this.data = res.data.data;
         })
