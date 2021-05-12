@@ -1,24 +1,29 @@
 <template>
-  <router-link to="/">Home</router-link> |
-  <router-link to="/about">About</router-link> |
-  <router-link to="/todo">Todo</router-link>
+  <div id="nav">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link> |
+    <router-link to="/project">项目</router-link> |
+    <router-link to="/today">当日</router-link> |
+    <router-link to="/the-week">本周</router-link> |
+    <router-link to="/the-month">本月</router-link>
+  </div>
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue'
+import { ref, defineComponent } from "vue";
 export default defineComponent({
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
     msg: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup: () => {
-    const count = ref(0)
-    return { count }
-  }
-})
+    const count = ref(0);
+    return { count };
+  },
+});
 </script>
 
 <style scoped>
@@ -36,5 +41,13 @@ code {
   padding: 2px 4px;
   border-radius: 4px;
   color: #304455;
+}
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>

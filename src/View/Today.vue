@@ -1,16 +1,14 @@
 <template>
   <div>
-    <h1>Todo</h1>
-
-    <h2>项目</h2>
-    <ul style="text-align: left;">
-      <p v-for="(p, index) in data" :key="index">{{p.name}}</p>
+    <h2>Today</h2>
+    <ul style="text-align: left">
+      <p v-for="(p, index) in data" :key="index">{{ p.name }}</p>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 import axios from "axios";
 
 export default defineComponent({
@@ -29,15 +27,14 @@ export default defineComponent({
         //params:可传递多个参数,固定写法,不能改,否则参数传递失败
         .get("/api/mysql")
         .then((res) => {
-          console.log(res.data.data);
           this.data = res.data.data;
         })
         .catch((err) => {
           console.log(err);
         });
     },
-  }
-})
+  },
+});
 </script>
 
 <style>
