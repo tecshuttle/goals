@@ -42,6 +42,9 @@ code {
   border-radius: 4px;
   color: #304455;
 }
+#nav {
+  margin-bottom: 1em;
+}
 #nav a {
   font-weight: bold;
   color: #2c3e50;

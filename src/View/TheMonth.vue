@@ -1,9 +1,5 @@
 <template>
   <div>
-    <h2>本月</h2>
-    {{ start.format("YYYY-MM-DD H:m:s") }} - {{ start.unix() }} <br />
-    {{ end.format("YYYY-MM-DD H:m:s") }} - {{ end.unix() }}
-
     <ul style="text-align: left">
       <p v-for="(p, index) in data" :key="index">{{ p.job_name }}</p>
     </ul>
@@ -46,12 +42,5 @@ export default defineComponent({
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>

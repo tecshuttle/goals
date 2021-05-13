@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h2>Today</h2>
-
-    {{ start.format("YYYY-MM-DD H:m:s") }} - {{ start.unix() }} <br />
-    {{ end.format("YYYY-MM-DD H:m:s") }} - {{ end.unix() }}
+    查询：<input @keyup="keyup" /> <span v-if="keyword!==''">{{searchResultTotal}}</span>
 
     <ul style="text-align: left">
-      <p v-for="(p, index) in data" :key="index">{{ p.job_name }}</p>
+      <p v-for="(p, index) in data" :key="index">
+        <span v-if="keyword!==''">{{dayjs(p.start_time*1000).format('YYYY-MM-DD')}}</span>
+        {{ p.job_name }}
+      </p>
     </ul>
   </div>
 </template>
@@ -20,16 +20,22 @@ export default defineComponent({
   components: {},
   data() {
     return {
+      dayjs: dayjs,
       data: "",
+      keyword: '',
+      searchResultTotal: 0,
       start: dayjs().startOf("day"),
       end: dayjs().endOf("day"),
     };
   },
   mounted() {
-    this.getData();
+    this.init();
   },
   methods: {
-    getData() {
+    init() {
+      this.getTodayItems();
+    },
+    getTodayItems() {
       axios
         //params:可传递多个参数,固定写法,不能改,否则参数传递失败
         .get("/api/items", {
@@ -42,17 +48,31 @@ export default defineComponent({
           console.log(err);
         });
     },
+    keyup(e) {
+      this.keyword = e.target.value.trim();
+      if (this.keyword === '') {
+        this.searchResultTotal = 0;
+        this.getTodayItems();
+        return;
+      }
+
+      axios
+        //params:可传递多个参数,固定写法,不能改,否则参数传递失败
+        .get("/api/items/search", {
+          params: { keyword: this.keyword },
+        })
+        .then((res) => {
+          this.data = res.data.data;
+          this.searchResultTotal = res.data.total;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
 });
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>项目</h2>
     <ul style="text-align: left">
       <p v-for="(p, index) in data" :key="index">{{ p.name }}</p>
     </ul>
@@ -38,12 +37,5 @@ export default defineComponent({
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
