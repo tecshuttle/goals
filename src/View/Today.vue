@@ -1,10 +1,15 @@
 <template>
   <div>
-    查询：<input @keyup="keyup" /> <span v-if="keyword!==''">{{searchResultTotal}}</span>
+    <p>
+      <a-input @keyup="keyup" placeholder="搜索" />
+      <span v-if="keyword !== ''">{{ searchResultTotal }}</span>
+    </p>
 
     <ul style="text-align: left">
       <p v-for="(p, index) in data" :key="index">
-        <span v-if="keyword!==''">{{dayjs(p.start_time*1000).format('YYYY-MM-DD')}}</span>
+        <span v-if="keyword !== ''">{{
+          dayjs(p.start_time * 1000).format("YYYY-MM-DD")
+        }}</span>
         {{ p.job_name }}
       </p>
     </ul>
@@ -22,7 +27,7 @@ export default defineComponent({
     return {
       dayjs: dayjs,
       data: "",
-      keyword: '',
+      keyword: "",
       searchResultTotal: 0,
       start: dayjs().startOf("day"),
       end: dayjs().endOf("day"),
@@ -50,7 +55,7 @@ export default defineComponent({
     },
     keyup(e) {
       this.keyword = e.target.value.trim();
-      if (this.keyword === '') {
+      if (this.keyword === "") {
         this.searchResultTotal = 0;
         this.getTodayItems();
         return;
@@ -68,11 +73,9 @@ export default defineComponent({
         .catch((err) => {
           console.log(err);
         });
-    }
+    },
   },
 });
 </script>
 
-<style>
-
-</style>
+<style></style>

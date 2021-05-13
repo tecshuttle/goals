@@ -2,6 +2,7 @@
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
+    <router-link to="/category">分类</router-link> |
     <router-link to="/project">项目</router-link> |
     <router-link to="/today">当日</router-link> |
     <router-link to="/the-week">本周</router-link> |
@@ -12,13 +13,6 @@
 <script lang="ts">
 import { ref, defineComponent } from "vue";
 export default defineComponent({
-  name: "HelloWorld",
-  props: {
-    msg: {
-      type: String,
-      required: true,
-    },
-  },
   setup: () => {
     const count = ref(0);
     return { count };

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <a-button type="primary" @click="add"> 新建项目 </a-button>
+      <a-button type="primary" @click="add"> 新建分类 </a-button>
     </div>
     <ul style="text-align: left" class="project-list">
       <p v-for="(p, index) in data" :key="index">
@@ -28,8 +28,7 @@ export default defineComponent({
   methods: {
     getData() {
       axios
-        //params:可传递多个参数,固定写法,不能改,否则参数传递失败
-        .get("/api/projects")
+        .get("/api/categories")
         .then((res) => {
           this.data = res.data.data;
         })
