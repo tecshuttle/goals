@@ -41,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
     component: ProjectForm,
   },
   {
+    path: "/project-form/:id",
+    name: "ProjectFormEdit",
+    component: ProjectForm,
+  },
+  {
     path: "/today",
     name: "Today",
     component: Today,
