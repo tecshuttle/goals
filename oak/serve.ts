@@ -30,6 +30,23 @@ router
       data,
     };
   })
+  .post("/categories", async (ctx) => {
+    // 获取body参数方法
+    const params = await ctx.request.body().value;
+
+    const opRes = await client.query(
+      `INSERT INTO todo_categories (name, parent) values(?, 0)`,
+      [params.name]
+    );
+
+    ctx.response.body = {
+      success: true,
+      params,
+      opRes,
+      //ctx,
+      //data,
+    };
+  })
   .get("/projects", async (ctx) => {
     const data = await client.query(
       `SELECT * FROM todo_projects where user_id=1`

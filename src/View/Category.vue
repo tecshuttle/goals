@@ -37,7 +37,7 @@ export default defineComponent({
         });
     },
     add() {
-      this.$router.push({ name: "ProjectForm" });
+      this.$router.push({ name: "CategoryForm" });
     },
   },
 });

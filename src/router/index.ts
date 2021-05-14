@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../Home.vue";
 import About from "../About.vue";
-import Project from "../View/Project.vue";
 import Category from "../View/Category.vue";
+import CategoryForm from "../View/CategoryForm.vue";
+import Project from "../View/Project.vue";
 import ProjectForm from "../View/ProjectForm.vue";
 import Today from "../View/Today.vue";
 import TheWeek from "../View/TheWeek.vue";
@@ -23,6 +24,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/category",
     name: "Category",
     component: Category,
+  },
+  {
+    path: "/category-form",
+    name: "CategoryForm",
+    component: CategoryForm,
   },
   {
     path: "/project",
