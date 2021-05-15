@@ -47,7 +47,7 @@ export default defineComponent({
     edit(item: any): void {
       this.$router.push({
         name: "ProjectFormEdit",
-        params: { id: item.id, item: item },
+        params: { id: item.id, item: JSON.stringify(item) },
       });
     },
   },

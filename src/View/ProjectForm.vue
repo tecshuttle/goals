@@ -20,7 +20,12 @@
             route.params.id ? "保存" : "新建"
           }}</a-button>
           <a-button style="margin-left: 10px" @click="goBack">取消</a-button>
-          <a-button type="danger" v-if="route.params.id" style="margin-left: 10px" @click="remove">
+          <a-button
+            type="danger"
+            v-if="route.params.id"
+            style="margin-left: 10px"
+            @click="remove"
+          >
             删除
           </a-button>
         </a-form-item>
@@ -43,14 +48,22 @@ import {
 } from "vue";
 
 interface FormState {
-  name: string;
+  name: string,
+  id: number,
+  user_id: number,
+  desc: string,
+  is_done: number
 }
 
 export default defineComponent({
   setup() {
     onMounted(() => {
       if (route.params.id) {
-        getProject(route.params.id);
+        if (route.params.item) {
+          updateFormState(JSON.parse(<string>route.params.item));
+        } else {
+          getProject(route.params.id);
+        }
       }
     });
 
@@ -101,15 +114,19 @@ export default defineComponent({
       axios
         .get("/api/projects/" + id)
         .then((res) => {
-          formState.name = res.data.data[0].name;
-          formState.user_id = res.data.data[0].user_id;
-          formState.id = res.data.data[0].id;
-          formState.desc = res.data.data[0].desc;
-          formState.is_done = res.data.data[0].is_done;
+          updateFormState(res.data.data[0]);
         })
         .catch((err) => {
           console.log(err);
         });
+    };
+
+    const updateFormState = (item: FormState) => {
+      formState.name = item.name;
+      formState.user_id = item.user_id;
+      formState.id = item.id;
+      formState.desc = item.desc;
+      formState.is_done = item.is_done;
     };
 
     const remove = () => {
@@ -128,6 +145,7 @@ export default defineComponent({
     };
 
     return {
+      //data
       formRef,
       rules,
       labelCol: {
@@ -136,10 +154,12 @@ export default defineComponent({
       wrapperCol: {
         span: 14,
       },
-      formState,
-      onSubmit,
       router,
       route,
+      formState,
+      //function
+      updateFormState,
+      onSubmit,
       remove,
       goBack,
     };
