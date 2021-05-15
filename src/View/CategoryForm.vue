@@ -59,11 +59,9 @@ export default defineComponent({
   setup() {
     onMounted(() => {
       if (route.params.id) {
-        if (route.params.item) {
-          updateFormState(JSON.parse(<string>route.params.item));
-        } else {
-          getCategory(route.params.id);
-        }
+        route.params.item
+          ? updateFormState(JSON.parse(<string>route.params.item))
+          : getCategory(route.params.id);
       }
     });
 

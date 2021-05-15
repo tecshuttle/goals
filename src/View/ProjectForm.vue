@@ -60,11 +60,9 @@ export default defineComponent({
   setup() {
     onMounted(() => {
       if (route.params.id) {
-        if (route.params.item) {
-          updateFormState(JSON.parse(<string>route.params.item));
-        } else {
-          getProject(route.params.id);
-        }
+        route.params.item
+          ? updateFormState(JSON.parse(<string>route.params.item))
+          : getProject(route.params.id);
       }
     });
 
