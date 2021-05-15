@@ -38,6 +38,7 @@ code {
 }
 #nav {
   margin-bottom: 1em;
+  font-size: 1.3em; 
 }
 #nav a {
   font-weight: bold;

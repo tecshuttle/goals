@@ -30,9 +30,10 @@ router
   })
   .get("/categories/:id", async (ctx) => {
     const params = helpers.getQuery(ctx, { mergeParams: true });
-    const data = await client.query(`SELECT * FROM todo_categories where id=?`, [
-      params.id,
-    ]);
+    const data = await client.query(
+      `SELECT * FROM todo_categories where id=?`,
+      [params.id]
+    );
 
     ctx.response.body = {
       success: true,
@@ -147,13 +148,19 @@ router
     // 获取参数方法：2
     const start = ctx.request.url.searchParams.get("start");
     const end = ctx.request.url.searchParams.get("end");
+    const status = ctx.request.url.searchParams.get("status");
+
+    let andStatus = "";
+    if (status) {
+      andStatus = ` and status = ${status}`;
+    }
 
     // 取数据
-    const sql = `SELECT * FROM todo_lists where start_time >= ${start} and start_time <= ${end} order by start_time asc limit 0 , 99`;
+    const sql = `SELECT * FROM todo_lists where start_time >= ${start} and start_time <= ${end} ${andStatus} order by start_time asc limit 0 , 99`;
     const data = await client.query(sql);
 
     // 取记录总数
-    const sqlTotal = `SELECT count(*) as total FROM todo_lists where start_time >= ${start} and start_time <= ${end}`;
+    const sqlTotal = `SELECT count(*) as total FROM todo_lists where start_time >= ${start} and start_time <= ${end} ${andStatus}`;
     const totalResult = await client.query(sqlTotal);
 
     ctx.response.body = {
