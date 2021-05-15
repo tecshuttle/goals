@@ -28,27 +28,61 @@ router
       data,
     };
   })
-  .post("/categories", async (ctx) => {
-    // 获取body参数方法
-    const params = await ctx.request.body().value;
+  .get("/categories/:id", async (ctx) => {
+    const params = helpers.getQuery(ctx, { mergeParams: true });
+    const data = await client.query(`SELECT * FROM todo_categories where id=?`, [
+      params.id,
+    ]);
 
+    ctx.response.body = {
+      success: true,
+      data,
+    };
+  })
+  .delete("/categories/:id", async (ctx) => {
+    const params = helpers.getQuery(ctx, { mergeParams: true });
+    const data = await client.query(`DELETE FROM todo_categories where id=?`, [
+      params.id,
+    ]);
+
+    ctx.response.body = {
+      success: true,
+      data,
+    };
+  })
+  .post("/categories", async (ctx) => {
+    const params = await ctx.request.body().value; // 获取body参数方法
     const opRes = await client.query(
-      `INSERT INTO todo_categories (name, parent) values(?, 0)`,
-      [params.name]
+      `INSERT INTO todo_categories (name, memo, parent) values(?, ?, 0)`,
+      [params.name, params.memo]
     );
 
     ctx.response.body = {
       success: true,
       params,
       opRes,
-      //ctx,
-      //data,
+    };
+  })
+  .put("/categories/:id", async (ctx) => {
+    const params = helpers.getQuery(ctx, { mergeParams: true });
+    const body = await ctx.request.body().value; // 获取body参数方法
+    const opRes = await client.query(
+      `UPDATE todo_categories as e SET name = ?, memo = ? WHERE id = ?`,
+      [body.name, body.memo, params.id]
+    );
+
+    ctx.response.body = {
+      success: true,
+      params,
+      body,
+      opRes,
     };
   })
   .get("/projects", async (ctx) => {
     const data = await client.query(
       `SELECT * FROM todo_projects where user_id=1`
     );
+
     ctx.response.body = {
       success: true,
       data,
@@ -59,6 +93,7 @@ router
     const data = await client.query(`SELECT * FROM todo_projects where id=?`, [
       params.id,
     ]);
+
     ctx.response.body = {
       success: true,
       data,
@@ -69,15 +104,14 @@ router
     const data = await client.query(`DELETE FROM todo_projects where id=?`, [
       params.id,
     ]);
+
     ctx.response.body = {
       success: true,
       data,
     };
   })
   .post("/projects", async (ctx) => {
-    // 获取body参数方法
-    const params = await ctx.request.body().value;
-
+    const params = await ctx.request.body().value; // 获取body参数方法
     const opRes = await client.query(
       `INSERT INTO todo_projects (name, user_id) values(?, 1)`,
       [params.name]
@@ -87,27 +121,23 @@ router
       success: true,
       params,
       opRes,
-      //ctx,
-      //data,
     };
   })
-  .put("/projects", async (ctx) => {
-    // 获取body参数方法
-    const params = await ctx.request.body().value;
-
+  .put("/projects/:id", async (ctx) => {
+    const params = helpers.getQuery(ctx, { mergeParams: true });
+    const body = await ctx.request.body().value; // 获取body参数方法
     // desc作为字段名，使用时表要加别我，否则报错；
     // query()方法，也可以改用execute()
     const opRes = await client.query(
       `UPDATE todo_projects as e SET name = ?, e.desc = ? WHERE id = ?`,
-      [params.name, params.desc, params.id]
+      [body.name, body.desc, params.id]
     );
 
     ctx.response.body = {
       success: true,
       params,
+      body,
       opRes,
-      //ctx,
-      //data,
     };
   })
   .get("/items", async (ctx) => {

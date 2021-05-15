@@ -1,13 +1,18 @@
 <template>
   <div>
-    <div>
-      <a-button type="primary" @click="add"> 新建分类 </a-button>
+    <div style="text-align: left" class="project-list">
+      <a-row :gutter="[16, 8]">
+        <template v-for="(p, index) in data" :key="index">
+          <a-col :span="12">
+            <a-button @click="edit(p)" block> {{ p.name }}</a-button>
+          </a-col>
+        </template>
+
+        <a-col :span="12">
+          <a-button type="primary" @click="add()" block> 新建分类 </a-button>
+        </a-col>
+      </a-row>
     </div>
-    <ul style="text-align: left" class="project-list">
-      <p v-for="(p, index) in data" :key="index">
-        {{ p.name }}
-      </p>
-    </ul>
   </div>
 </template>
 
@@ -38,6 +43,12 @@ export default defineComponent({
     },
     add() {
       this.$router.push({ name: "CategoryForm" });
+    },
+    edit(item: any): void {
+      this.$router.push({
+        name: "CategoryFormEdit",
+        params: { id: item.id, item: JSON.stringify(item) },
+      });
     },
   },
 });

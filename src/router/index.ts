@@ -20,6 +20,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "About",
     component: About,
   },
+  //Category
   {
     path: "/category",
     name: "Category",
@@ -30,6 +31,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "CategoryForm",
     component: CategoryForm,
   },
+  {
+    path: "/category-form/:id",
+    name: "CategoryFormEdit",
+    component: CategoryForm,
+  },
+  //Project
   {
     path: "/project",
     name: "Project",
@@ -45,6 +52,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "ProjectFormEdit",
     component: ProjectForm,
   },
+  //today
   {
     path: "/today",
     name: "Today",

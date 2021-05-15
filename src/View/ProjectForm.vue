@@ -11,14 +11,15 @@
         <a-form-item ref="name" name="name" label="项目名称">
           <a-input v-model:value="formState.name" />
         </a-form-item>
+
         <a-form-item ref="desc" name="desc" label="项目说明">
           <a-input v-model:value="formState.desc" />
         </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-          <a-button type="primary" @click="onSubmit">{{
-            route.params.id ? "保存" : "新建"
-          }}</a-button>
+          <a-button type="primary" @click="onSubmit">
+            {{ route.params.id ? "保存" : "新建" }}
+          </a-button>
           <a-button style="margin-left: 10px" @click="goBack">取消</a-button>
           <a-button
             type="danger"
@@ -48,11 +49,11 @@ import {
 } from "vue";
 
 interface FormState {
-  name: string,
-  id: number,
-  user_id: number,
-  desc: string,
-  is_done: number
+  name: string;
+  id: number;
+  user_id: number;
+  desc: string;
+  is_done: number;
 }
 
 export default defineComponent({
@@ -88,7 +89,7 @@ export default defineComponent({
         .validate()
         .then(() => {
           axios({
-            url: "/api/projects",
+            url: "/api/projects/" + (route.params.id || ""),
             method: route.params.id ? "put" : "post",
             data: toRaw(formState),
             headers: {
