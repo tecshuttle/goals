@@ -41,7 +41,7 @@
           {{ dayjs(p.start_time * 1000).format("YYYY-MM-DD") }} &nbsp;
         </span>
 
-        <span :class="{ 'job-done': p.status }">{{ p.job_name }}</span>
+        <span :class="{'job-item': true, 'job-done': p.status }" @click="edit(p)">{{ p.job_name }}</span>
       </p>
     </ul>
   </div>
@@ -130,11 +130,20 @@ export default defineComponent({
       this.end = this.end.add(1, "day");
       this.getItems();
     },
+    edit(item: any): void {
+      this.$router.push({
+        name: "TodayFormEdit",
+        params: { id: item.id, item: JSON.stringify(item) },
+      });
+    },
   },
 });
 </script>
 
 <style>
+.job-item {
+  cursor: pointer;
+}
 .job-done {
   color: #bbbbbb;
 }

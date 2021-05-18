@@ -102,7 +102,7 @@ router
   })
   .delete("/projects/:id", async (ctx) => {
     const params = helpers.getQuery(ctx, { mergeParams: true });
-    const data = await client.query(`DELETE FROM todo_projects where id=?`, [
+    const data = await client.query(`DELETE FROM todo_projects WHERE id=?`, [
       params.id,
     ]);
 
@@ -168,6 +168,45 @@ router
       total: totalResult[0].total,
       params,
       sql,
+      data,
+    };
+  })
+  .get("/items/:id", async (ctx) => {
+    const params = helpers.getQuery(ctx, { mergeParams: true });
+    const data = await client.query(`SELECT * FROM todo_lists where id=?`, [
+      params.id,
+    ]);
+
+    ctx.response.body = {
+      success: true,
+      data,
+    };
+  })
+  .put("/items/:id", async (ctx) => {
+    const params = helpers.getQuery(ctx, { mergeParams: true });
+    const body = await ctx.request.body().value; // 获取body参数方法
+    // desc作为字段名，使用时表要加别我，否则报错；
+    // query()方法，也可以改用execute()
+    const opRes = await client.query(
+      `UPDATE todo_lists as e SET job_name = ?, e.job_desc = ? WHERE id = ?`,
+      [body.job_name, body.job_desc, params.id]
+    );
+
+    ctx.response.body = {
+      success: true,
+      params,
+      body,
+      opRes,
+    };
+  })
+  .delete("/items/:id", async (ctx) => {
+    const params = helpers.getQuery(ctx, { mergeParams: true });
+    const data = await client.query(`DELETE FROM todo_lists WHERE id=?`, [
+      params.id,
+    ]);
+
+    ctx.response.body = {
+      success: true,
       data,
     };
   })

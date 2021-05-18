@@ -6,6 +6,7 @@ import CategoryForm from "../View/CategoryForm.vue";
 import Project from "../View/Project.vue";
 import ProjectForm from "../View/ProjectForm.vue";
 import Today from "../View/Today.vue";
+import TodayForm from "../View/TodayForm.vue";
 import TheWeek from "../View/TheWeek.vue";
 import TheMonth from "../View/TheMonth.vue";
 
@@ -57,6 +58,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/today",
     name: "Today",
     component: Today,
+  },
+  {
+    path: "/today/:id",
+    name: "TodayFormEdit",
+    component: TodayForm,
   },
   {
     path: "/the-week",
