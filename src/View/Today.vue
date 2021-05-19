@@ -14,9 +14,7 @@
         </a-col>
         <a-col :span="4" v-if="keyword == ''">
           <a-form-item>
-            <a-checkbox v-model:checked="isDone" @change="getItems"
-              >未完成</a-checkbox
-            >
+            <a-checkbox v-model:checked="isDone" @change="getItems">未完成</a-checkbox>
           </a-form-item>
         </a-col>
         <a-col :span="11" v-if="keyword == ''" style="display: flex; justify-content: space-between">
@@ -49,6 +47,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useStore } from "vuex";
 import axios from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
@@ -58,8 +57,9 @@ export default defineComponent({
   components: {},
   data() {
     return {
+      store: useStore(),
       dayjs: dayjs,
-      data: "",
+      data: [],
       keyword: "",
       isDone: false,
       searchResultTotal: 0,
@@ -72,7 +72,11 @@ export default defineComponent({
   },
   methods: {
     init() {
-      this.getTodayItems();
+      if (Array.from(this.store.state.items.todayList).length > 0) {
+        this.data = this.store.state.items.todayList
+      } else {
+        this.getTodayItems();
+      }
     },
     getTodayItems() {
       this.getItems();
@@ -93,6 +97,7 @@ export default defineComponent({
           params,
         })
         .then((res) => {
+          this.store.commit('setTodayList', res.data.data);
           this.data = res.data.data;
         })
         .catch((err) => {
