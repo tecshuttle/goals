@@ -4,15 +4,27 @@ export default createStore({
   modules: {
     items: {
       state: {
+        categoryList: [],
+        projectList: [],
         todayList: [],
-        id: '',
       },
       mutations: {
-        setInfo(state, data) {
-          Object.assign(state, data);
+        setCategoryList(state, list) {
+          state.categoryList = list;
         },
-        setTodayList(state, todayList) {
-          state.todayList = todayList;
+        setProjectList(state, list) {
+          state.projectList = list;
+        },
+        setProject(state, item) {
+          for (const i in state.projectList) {
+            if (state.projectList[i].id === item.id) {
+              state.projectList[i] = item;
+              break;
+            }
+          }
+        },
+        setTodayList(state, list) {
+          state.todayList = list;
         },
       },
     },

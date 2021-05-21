@@ -72,6 +72,7 @@ export default defineComponent({
   },
   methods: {
     init() {
+      console.log(Array.from(this.store.state.items.todayList));
       if (Array.from(this.store.state.items.todayList).length > 0) {
         this.data = this.store.state.items.todayList
       } else {

@@ -17,24 +17,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import axios from "axios";
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
+import axios from 'axios';
 
 export default defineComponent({
   components: {},
   data() {
     return {
-      data: "",
+      store: useStore(),
+      data: '',
     };
   },
   mounted() {
-    this.getData();
+    if (Array.from(this.store.state.items.projectList).length > 0) {
+      this.data = this.store.state.items.projectList;
+    } else {
+      this.getData();
+    }
   },
   methods: {
     getData() {
       axios
-        .get("/api/projects")
+        .get('/api/projects')
         .then((res) => {
+          this.store.commit('setProjectList', res.data.data);
           this.data = res.data.data;
         })
         .catch((err) => {
@@ -42,11 +49,11 @@ export default defineComponent({
         });
     },
     add() {
-      this.$router.push({ name: "ProjectForm" });
+      this.$router.push({ name: 'ProjectForm' });
     },
     edit(item: any): void {
       this.$router.push({
-        name: "ProjectFormEdit",
+        name: 'ProjectFormEdit',
         params: { id: item.id, item: JSON.stringify(item) },
       });
     },
