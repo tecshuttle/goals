@@ -57,9 +57,10 @@ router
   .put('/categories/:id', async (ctx) => {
     const params = helpers.getQuery(ctx, { mergeParams: true });
     const body = await ctx.request.body().value; // 获取body参数方法
-    const opRes = await client.query(`UPDATE todo_categories as e SET name = ?, memo = ? WHERE id = ?`, [
+    const opRes = await client.query(`UPDATE todo_categories as e SET name = ?, memo = ?, parent = ? WHERE id = ?`, [
       body.name,
       body.memo,
+      body.parent,
       params.id
     ]);
 

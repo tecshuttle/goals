@@ -188,7 +188,6 @@ export default defineComponent({
 }
 
 .sortable-ghost {
-  width: 100%;
   height: 1.5em;
   border: dotted 2px #ddd;
   background: transparent;
