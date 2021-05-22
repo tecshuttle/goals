@@ -6,15 +6,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import Header from './components/Header.vue'
+import { defineComponent } from 'vue';
+import Header from './components/Header.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     Header
   }
-})
+});
 </script>
 
 <style>
@@ -25,5 +25,8 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
   margin-top: 1em;
+}
+.main {
+  margin: 0 1em;
 }
 </style>

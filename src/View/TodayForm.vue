@@ -7,17 +7,15 @@
         </a-form-item>
 
         <a-form-item ref="desc" name="desc" label="任务说明">
-          <a-textarea v-model:value="formState.job_desc" :rows="6"/>
+          <a-textarea v-model:value="formState.job_desc" :rows="6" />
         </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
           <a-button type="primary" @click="onSubmit">
-            {{ route.params.id ? "保存" : "新建" }}
+            {{ route.params.id ? '保存' : '新建' }}
           </a-button>
           <a-button style="margin-left: 10px" @click="goBack">取消</a-button>
-          <a-button type="danger" v-if="route.params.id" style="margin-left: 10px" @click="remove">
-            删除
-          </a-button>
+          <a-button type="danger" v-if="route.params.id" style="margin-left: 10px" @click="remove"> 删除 </a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -25,17 +23,10 @@
 </template>
 
 <script lang="ts">
-import axios from "axios";
-import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
-import { useRouter, useRoute } from "vue-router";
-import {
-  defineComponent,
-  onMounted,
-  ref,
-  UnwrapRef,
-  reactive,
-  toRaw,
-} from "vue";
+import axios from 'axios';
+import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
+import { useRouter, useRoute } from 'vue-router';
+import { defineComponent, onMounted, ref, UnwrapRef, reactive, toRaw } from 'vue';
 
 interface FormState {
   id: number;
@@ -47,37 +38,35 @@ export default defineComponent({
   setup() {
     onMounted(() => {
       if (route.params.id) {
-        route.params.item
-          ? updateFormState(JSON.parse(<string>route.params.item))
-          : getItem(route.params.id);
+        route.params.item ? updateFormState(JSON.parse(<string>route.params.item)) : getItem(route.params.id);
       }
     });
 
     const formRef = ref();
     let formState: UnwrapRef<FormState> = reactive({
       id: 0,
-      job_name: "",
-      job_desc: "",
+      job_name: '',
+      job_desc: ''
     });
 
     const rules = {
       job_name: [
-        { required: true, message: "请输入项目名称", trigger: "blur" },
-        { min: 2, max: 50, message: "字符长度：2-50", trigger: "blur" },
-      ],
+        { required: true, message: '请输入项目名称', trigger: 'blur' },
+        { min: 2, max: 50, message: '字符长度：2-50', trigger: 'blur' }
+      ]
     };
 
     const onSubmit = () => {
       formRef.value
         .validate()
-        .then(() => {          
+        .then(() => {
           axios({
-            url: "/api/items/" + (route.params.id || ""),
-            method: route.params.id ? "put" : "post",
+            url: '/api/items/' + (route.params.id || ''),
+            method: route.params.id ? 'put' : 'post',
             data: toRaw(formState),
             headers: {
-              "Content-Type": "application/json",
-            },
+              'Content-Type': 'application/json'
+            }
           })
             .then((res) => {
               goBack();
@@ -87,7 +76,7 @@ export default defineComponent({
             });
         })
         .catch((error: ValidateErrorEntity<FormState>) => {
-          console.log("error", error);
+          console.log('error', error);
         });
     };
 
@@ -96,7 +85,7 @@ export default defineComponent({
 
     const getItem = (id: any) => {
       axios
-        .get("/api/items/" + id)
+        .get('/api/items/' + id)
         .then((res) => {
           updateFormState(res.data.data[0]);
         })
@@ -113,7 +102,7 @@ export default defineComponent({
 
     const remove = () => {
       axios
-        .delete("/api/items/" + route.params.id)
+        .delete('/api/items/' + route.params.id)
         .then((res) => {
           goBack();
         })
@@ -123,7 +112,7 @@ export default defineComponent({
     };
 
     const goBack = () => {
-      router.push({ name: "Today" });
+      router.push({ name: 'Today' });
     };
 
     return {
@@ -131,10 +120,10 @@ export default defineComponent({
       formRef,
       rules,
       labelCol: {
-        span: 4,
+        span: 4
       },
       wrapperCol: {
-        span: 14,
+        span: 14
       },
       router,
       route,
@@ -143,12 +132,10 @@ export default defineComponent({
       updateFormState,
       onSubmit,
       remove,
-      goBack,
+      goBack
     };
-  },
+  }
 });
 </script>
 
-<style>
-
-</style>
+<style></style>

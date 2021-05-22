@@ -23,7 +23,7 @@
           </a-form-item>
 
           <a-form-item>
-            <span>{{ start.format("MM-DD dd") }}</span>
+            <span>{{ start.format('MM-DD dd') }}</span>
           </a-form-item>
 
           <a-form-item>
@@ -33,25 +33,26 @@
       </a-row>
     </div>
 
-    <ul style="text-align: left">
+    <div style="text-align: left" id="items">
       <p v-for="(p, index) in data" :key="index">
         <span :class="{ 'job-done': p.status }" v-if="keyword !== ''">
-          {{ dayjs(p.start_time * 1000).format("YYYY-MM-DD") }} &nbsp;
+          {{ dayjs(p.start_time * 1000).format('YYYY-MM-DD') }} &nbsp;
         </span>
 
-        <span :class="{'job-item': true, 'job-done': p.status }" @click="edit(p)">{{ p.job_name }}</span>
+        <span :class="{ 'job-item': true, 'job-done': p.status }" @click="edit(p)">{{ p.job_name }}</span>
       </p>
-    </ul>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { useStore } from "vuex";
-import axios from "axios";
-import dayjs from "dayjs";
-import "dayjs/locale/zh-cn";
-dayjs.locale("zh-cn");
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
+import axios from 'axios';
+import Sortable from 'sortablejs';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+dayjs.locale('zh-cn');
 
 export default defineComponent({
   components: {},
@@ -60,21 +61,21 @@ export default defineComponent({
       store: useStore(),
       dayjs: dayjs,
       data: [],
-      keyword: "",
+      keyword: '',
       isDone: false,
       searchResultTotal: 0,
-      start: dayjs().startOf("day"),
-      end: dayjs().endOf("day"),
+      start: dayjs().startOf('day'),
+      end: dayjs().endOf('day')
     };
   },
   mounted() {
+    new Sortable(document.getElementById('items'));
     this.init();
   },
   methods: {
     init() {
-      console.log(Array.from(this.store.state.items.todayList));
       if (Array.from(this.store.state.items.todayList).length > 0) {
-        this.data = this.store.state.items.todayList
+        this.data = this.store.state.items.todayList;
       } else {
         this.getTodayItems();
       }
@@ -85,7 +86,7 @@ export default defineComponent({
     getItems() {
       let params = {
         start: this.start.unix(),
-        end: this.end.unix(),
+        end: this.end.unix()
       };
 
       if (this.isDone) {
@@ -94,8 +95,8 @@ export default defineComponent({
 
       axios
         //params:可传递多个参数,固定写法,不能改,否则参数传递失败
-        .get("/api/items", {
-          params,
+        .get('/api/items', {
+          params
         })
         .then((res) => {
           this.store.commit('setTodayList', res.data.data);
@@ -107,7 +108,7 @@ export default defineComponent({
     },
     keyup(e: any) {
       this.keyword = e.target.value.trim();
-      if (this.keyword === "") {
+      if (this.keyword === '') {
         this.searchResultTotal = 0;
         this.getTodayItems();
         return;
@@ -115,8 +116,8 @@ export default defineComponent({
 
       axios
         //params:可传递多个参数,固定写法,不能改,否则参数传递失败
-        .get("/api/items/search", {
-          params: { keyword: this.keyword },
+        .get('/api/items/search', {
+          params: { keyword: this.keyword }
         })
         .then((res) => {
           this.data = res.data.data;
@@ -127,22 +128,22 @@ export default defineComponent({
         });
     },
     yestoday() {
-      this.start = this.start.subtract(1, "day");
-      this.end = this.end.subtract(1, "day");
+      this.start = this.start.subtract(1, 'day');
+      this.end = this.end.subtract(1, 'day');
       this.getItems();
     },
     tomorrow() {
-      this.start = this.start.add(1, "day");
-      this.end = this.end.add(1, "day");
+      this.start = this.start.add(1, 'day');
+      this.end = this.end.add(1, 'day');
       this.getItems();
     },
     edit(item: any): void {
       this.$router.push({
-        name: "TodayFormEdit",
-        params: { id: item.id, item: JSON.stringify(item) },
+        name: 'TodayFormEdit',
+        params: { id: item.id, item: JSON.stringify(item) }
       });
-    },
-  },
+    }
+  }
 });
 </script>
 
