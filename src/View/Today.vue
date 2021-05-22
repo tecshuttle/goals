@@ -34,7 +34,7 @@
     </div>
 
     <div style="text-align: left" id="items">
-      <p v-for="(p, index) in data" :key="index">
+      <p v-for="(p, index) in data" :key="index" :jobId="p.id">
         <span :class="{ 'job-done': p.status }" v-if="keyword !== ''">
           {{ dayjs(p.start_time * 1000).format('YYYY-MM-DD') }} &nbsp;
         </span>
@@ -49,6 +49,7 @@
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import axios from 'axios';
+import qs from 'qs';
 import Sortable from 'sortablejs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -69,7 +70,34 @@ export default defineComponent({
     };
   },
   mounted() {
-    new Sortable(document.getElementById('items'));
+    let me = this;
+    new Sortable(document.getElementById('items'), {
+      ghostClass: 'sortable-ghost',
+      cursor: 'move',
+      opacity: 0.6, //拖动时，透明度为0.6
+      onEnd: function (evt) {
+        const params = {
+          id: evt.item.attributes.jobId.value,
+          prev_job_id: evt.item.previousElementSibling?.attributes.jobId.value ?? 0,
+          next_job_id: evt.item.nextSibling?.attributes.jobId.value ?? 0,
+          week_date: me.get_first_day_of_week(),
+          to_day: 'day' + me.start.day()
+        };
+
+        // console.log(params);
+
+        axios
+          .post('/go-api/todo/move_job', qs.stringify(params), {
+            headers: { 'content-type': 'application/x-www-form-urlencoded' }
+          })
+          .then((res) => {
+            // none
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
     this.init();
   },
   methods: {
@@ -79,6 +107,10 @@ export default defineComponent({
       } else {
         this.getTodayItems();
       }
+    },
+    get_first_day_of_week() {
+      let today = this.start;
+      return today.day(1).format('YYYY-MM-DD');
     },
     getTodayItems() {
       this.getItems();
@@ -153,5 +185,13 @@ export default defineComponent({
 }
 .job-done {
   color: #bbbbbb;
+}
+
+.sortable-ghost {
+  width: 100%;
+  height: 1.5em;
+  border: dotted 2px #ddd;
+  background: transparent;
+  color: transparent;
 }
 </style>

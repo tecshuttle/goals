@@ -13,8 +13,13 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:4000', //代理接口
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/api/, '')
       },
-    },
-  },
+      '/go-api': {
+        target: 'http://www.tomtalk.net', //代理接口
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/go-api/, '')
+      }
+    }
+  }
 });
